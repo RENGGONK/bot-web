@@ -10,6 +10,8 @@ app.use(express.json());
 
 app.post('/', async (req, res) => {
     const userMessage = req.body.message;
+    console.log("Incoming message:", userMessage);
+
     try {
         const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
@@ -24,10 +26,17 @@ app.post('/', async (req, res) => {
         });
 
         const data = await response.json();
-        res.json({ reply: data.choices[0].message.content });
+        console.log("Groq API response:", JSON.stringify(data));
+
+        if (response.ok && data.choices && data.choices[0] && data.choices[0].message) {
+            res.json({ reply: data.choices[0].message.content });
+        } else {
+            console.error("Groq API Error:", data);
+            res.json({ reply: 'Oops 🐸💥 Something went wrong with Groq API.' });
+        }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error("Catch Error:", error);
+        res.status(500).json({ reply: 'Internal Server Error 🐸💥' });
     }
 });
 
