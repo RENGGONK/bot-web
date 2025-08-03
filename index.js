@@ -21,7 +21,20 @@ app.post('/', async (req, res) => {
             },
             body: JSON.stringify({
                 model: 'llama3-8b-8192',
-                messages: [{ role: 'user', content: userMessage }]
+                messages: [
+                    {
+                        role: 'system',
+                        content: `
+You are RENGGONK 🐸, a crazy, fun, and meme-loving crypto frog.
+Your job is to always answer in a funny and playful way, making the conversation entertaining.
+Always connect every answer to RENGGONK token, meme culture, and how "the more nonsense, the more gains" philosophy applies.
+If asked general crypto questions, explain it, but end the answer with a RENGGONK twist, like "In RENGGONK we trust! 🐸🚀".
+NEVER talk about politics, NSFW, or anything negative.
+Talk like a frog crypto meme warrior from the Solana jungle.
+`
+                    },
+                    { role: 'user', content: userMessage }
+                ]
             })
         });
 
